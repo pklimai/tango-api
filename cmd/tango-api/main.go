@@ -1,14 +1,21 @@
 package main
 
 import (
+	"context"
+
 	"gitlab.com/zigal0-group/nica/tango-api/config"
+	employee_repository "gitlab.com/zigal0-group/nica/tango-api/internal/adapter/repository/employee"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/api/tango_api_service_impl"
+	employee_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/employee"
+	"gitlab.com/zigal0-group/nica/tango-api/internal/database"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/generated/swagger"
 	"gitlab.com/zigal0/architect"
 	"gitlab.com/zigal0/architect/pkg/logger"
 )
 
 func main() {
+	ctx := context.Background()
+
 	err := config.InitConfig()
 	if err != nil {
 		logger.Fatalf("failed to init config: %v", err)
@@ -24,8 +31,17 @@ func main() {
 		logger.Fatalf("failed to create app: %v", err)
 	}
 
+	pgDB, err := database.InitPostgreSQLConn(ctx)
+	if err != nil {
+		logger.Fatalf("failed to connect to pg: %v", err)
+	}
+
+	employeeRepo := employee_repository.New(pgDB)
+
+	employeeManager := employee_manager.New(employeeRepo)
+
 	err = a.Run(
-		tango_api_service_impl.New(),
+		tango_api_service_impl.New(employeeManager),
 	)
 	if err != nil {
 		logger.Fatalf("faile to run app: %v", err)

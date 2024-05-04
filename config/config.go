@@ -11,12 +11,14 @@ import (
 
 // nolint: revive, gosec
 const (
-	Key_LogLevel = "LOG_LEVEL"
+	Key_LogLevel key = "LOG_LEVEL"
 
 	Key_Host        key = "HOST"
 	Key_PortHTTP    key = "PORT_HTTP"
 	Key_PortSwagger key = "PORT_SWAGGER"
 	Key_PortGRPC    key = "PORT_GRPC"
+
+	Key_PGDSN key = "PG_DSN"
 )
 
 // Errors

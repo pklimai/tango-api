@@ -9,11 +9,12 @@ import (
 )
 
 type Service struct {
+	employeeManager employeeManager
 	pb.UnimplementedTangoApiServiceServer
 }
 
-func New() *Service {
-	return &Service{}
+func New(employeeManager employeeManager) *Service {
+	return &Service{employeeManager: employeeManager}
 }
 
 func (s *Service) RegisterGRPC(server *grpc.Server) {
