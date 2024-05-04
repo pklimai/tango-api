@@ -1,0 +1,111 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "tango-api",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "TangoApiService"
+    }
+  ],
+  "host": "localhost:7000",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tango-api/v1/get-employee": {
+      "get": {
+        "summary": "Get employee by id.",
+        "operationId": "TangoApiService_GetEmployeeV1",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/tango_api_serviceGetEmployeeV1Response"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TangoApiService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "tango_api_serviceEmployee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "tango_api_serviceGetEmployeeV1Response": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/tango_api_serviceEmployee"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "API for tango-api application.",
+    "url": "https://gitlab.com/zigal0-group/nica/tango-api"
+  }
+}
