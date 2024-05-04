@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service;
+
+option go_package = "gitlab.com/zigal0-group/nica/tango-api/internal/generated/api/tango_api_service;tango_api_service";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "tango-api";
+    };
+    host: "localhost:7000";
+    external_docs: {
+      url: "https://gitlab.com/zigal0-group/nica/tango-api";
+      description: "API for tango-api application.";
+    };
+    schemes: [HTTP, HTTPS];
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+service TangoApiService {
+    // Get employee by id.
+    rpc GetEmployeeV1 (GetEmployeeV1Request) returns (GetEmployeeV1Response) {
+        option (google.api.http) = {
+            get: "/tango-api/v1/get-employee",
+        };
+    }
+}
+
+// --------------- GENERAL TYPES ---------------
+
+message Employee {
+    int64 id = 1 [json_name = "id"];
+    string name = 2 [json_name = "name"];
+}
+
+// --------------- HANLDER TYPES ---------------
+
+message GetEmployeeV1Request {
+    int64 employee_id = 1 [json_name = "employee_id", (validate.rules).int64.gt = 0];
+}
+
+message GetEmployeeV1Response {
+    Employee employee = 1 [json_name = "employee"];
+}
