@@ -7,6 +7,7 @@ option go_package = "gitlab.com/zigal0-group/nica/tango-api/internal/generated/a
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
@@ -23,27 +24,52 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service TangoApiService {
-    // Get employee by id.
-    rpc GetEmployeeV1 (GetEmployeeV1Request) returns (GetEmployeeV1Response) {
+    // Get tango params by filter.
+    rpc GetTangoParamsV1 (GetTangoParamsV1Request) returns (GetTangoParamsV1Response) {
         option (google.api.http) = {
-            get: "/tango-api/v1/get-employee",
+            get: "/tango-api/v1/get-tango-params",
         };
     }
 }
 
-// --------------- GENERAL TYPES ---------------
-
-message Employee {
-    int64 id = 1 [json_name = "id"];
-    string name = 2 [json_name = "name"];
-}
-
 // --------------- HANLDER TYPES ---------------
 
-message GetEmployeeV1Request {
-    int64 employee_id = 1 [json_name = "employee_id", (validate.rules).int64.gt = 0];
+message GetTangoParamsV1Request {
+    Filter filter = 1 [json_name = "filter", (validate.rules).message.required = true];
+    
+    message Filter {
+       string domain = 1 [json_name = "domain", (validate.rules).string.min_len = 1];
+       string name = 2 [json_name = "name", (validate.rules).string.min_len = 1];
+       optional string member = 3 [json_name = "member", (validate.rules).string.min_len = 1];
+       google.protobuf.Timestamp time_from = 4 [json_name = "time_from", (validate.rules).timestamp.required = true]; 
+       google.protobuf.Timestamp time_to = 5 [json_name = "time_to", (validate.rules).timestamp.required = true]; 
+    }
 }
 
-message GetEmployeeV1Response {
-    Employee employee = 1 [json_name = "employee"];
+message GetTangoParamsV1Response {
+    ParamType param_type = 1 [json_name = "param_type"];
+    repeated ScalarParam scalar_params = 2 [json_name = "scalar_params"];
+    repeated ArrayParam array_parmas = 3 [json_name = "array_parmas"];
+
+    message ScalarParam {
+        string raw_value_r = 1 [json_name = "raw_value_r"]; 
+        string raw_value_w = 2 [json_name = "raw_value_w"]; 
+        google.protobuf.Timestamp data_time = 3 [json_name = "data_time"];
+    }
+
+    message ArrayParam {
+        repeated string raw_values_r = 1 [json_name = "raw_values_r"]; 
+        repeated string raw_values_w = 2 [json_name = "raw_values_w"];
+        google.protobuf.Timestamp data_time = 3 [json_name = "data_time"];
+    }
+
+    enum ParamType {
+        INVALID = 0;
+        FLOAT64 = 1;
+        BOOL = 2;
+        STRING = 3;
+        INT16 = 4;
+        INT32 = 5;
+        INT64 = 6;
+    }
 }

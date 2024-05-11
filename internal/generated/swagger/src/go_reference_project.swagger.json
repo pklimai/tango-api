@@ -21,15 +21,15 @@
     "application/json"
   ],
   "paths": {
-    "/tango-api/v1/get-employee": {
+    "/tango-api/v1/get-tango-params": {
       "get": {
-        "summary": "Get employee by id.",
-        "operationId": "TangoApiService_GetEmployeeV1",
+        "summary": "Get tango params by filter.",
+        "operationId": "TangoApiService_GetTangoParamsV1",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/tango_api_serviceGetEmployeeV1Response"
+              "$ref": "#/definitions/tango_api_serviceGetTangoParamsV1Response"
             }
           },
           "default": {
@@ -41,11 +41,36 @@
         },
         "parameters": [
           {
-            "name": "employee_id",
+            "name": "filter.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.member",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.time_from",
             "in": "query",
             "required": false,
             "type": "string",
-            "format": "int64"
+            "format": "date-time"
+          },
+          {
+            "name": "filter.time_to",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -55,6 +80,77 @@
     }
   },
   "definitions": {
+    "GetTangoParamsV1RequestFilter": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "member": {
+          "type": "string"
+        },
+        "time_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "time_to": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "GetTangoParamsV1ResponseArrayParam": {
+      "type": "object",
+      "properties": {
+        "raw_values_r": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "raw_values_w": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "GetTangoParamsV1ResponseParamType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "FLOAT64",
+        "BOOL",
+        "STRING",
+        "INT16",
+        "INT32",
+        "INT64"
+      ],
+      "default": "INVALID"
+    },
+    "GetTangoParamsV1ResponseScalarParam": {
+      "type": "object",
+      "properties": {
+        "raw_value_r": {
+          "type": "string"
+        },
+        "raw_value_w": {
+          "type": "string"
+        },
+        "data_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -83,23 +179,25 @@
         }
       }
     },
-    "tango_api_serviceEmployee": {
+    "tango_api_serviceGetTangoParamsV1Response": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
+        "param_type": {
+          "$ref": "#/definitions/GetTangoParamsV1ResponseParamType"
         },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "tango_api_serviceGetEmployeeV1Response": {
-      "type": "object",
-      "properties": {
-        "employee": {
-          "$ref": "#/definitions/tango_api_serviceEmployee"
+        "scalar_params": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/GetTangoParamsV1ResponseScalarParam"
+          }
+        },
+        "array_parmas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/GetTangoParamsV1ResponseArrayParam"
+          }
         }
       }
     }
