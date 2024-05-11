@@ -3,13 +3,16 @@ package main
 import (
 	"context"
 
+	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"gitlab.com/zigal0-group/nica/tango-api/config"
-	employee_repository "gitlab.com/zigal0-group/nica/tango-api/internal/adapter/repository/employee"
+	param_repository "gitlab.com/zigal0-group/nica/tango-api/internal/adapter/repository/param"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/api/tango_api_service_impl"
-	employee_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/employee"
+	param_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/param"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/database"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/generated/swagger"
 	"gitlab.com/zigal0/architect"
+	"gitlab.com/zigal0/architect/pkg/business_error"
 	"gitlab.com/zigal0/architect/pkg/logger"
 )
 
@@ -26,7 +29,12 @@ func main() {
 		logger.Fatalf("failed to create app settings: %v", err)
 	}
 
-	a, err := architect.NewApp(appSettings)
+	a, err := architect.NewApp(
+		appSettings,
+		architect.WithUnaryInterseptor(grpc_validator.UnaryServerInterceptor()),
+		architect.WithUnaryInterseptor(business_error.UnaryServerInterceptor(true)),
+		architect.WithUnaryInterseptor(grpc_recovery.UnaryServerInterceptor()),
+	)
 	if err != nil {
 		logger.Fatalf("failed to create app: %v", err)
 	}
@@ -36,12 +44,13 @@ func main() {
 		logger.Fatalf("failed to connect to pg: %v", err)
 	}
 
-	employeeRepo := employee_repository.New(pgDB)
+	// repo
+	paramRepository := param_repository.New(pgDB)
 
-	employeeManager := employee_manager.New(employeeRepo)
+	paramManager := param_manager.New(paramRepository)
 
 	err = a.Run(
-		tango_api_service_impl.New(employeeManager),
+		tango_api_service_impl.New(paramManager),
 	)
 	if err != nil {
 		logger.Fatalf("faile to run app: %v", err)

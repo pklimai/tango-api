@@ -4,17 +4,30 @@ import (
 	"context"
 
 	gw_runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"gitlab.com/zigal0-group/nica/tango-api/internal/domain"
 	pb "gitlab.com/zigal0-group/nica/tango-api/internal/generated/api/tango_api_service"
 	"google.golang.org/grpc"
 )
 
+type paramManager interface {
+	GetTangoParamByFilter(
+		ctx context.Context,
+		filter domain.ParamFilter,
+	) (domain.Params, error)
+}
+
 type Service struct {
-	employeeManager employeeManager
+	paramManager
+
 	pb.UnimplementedTangoApiServiceServer
 }
 
-func New(employeeManager employeeManager) *Service {
-	return &Service{employeeManager: employeeManager}
+func New(
+	paramManager paramManager,
+) *Service {
+	return &Service{
+		paramManager: paramManager,
+	}
 }
 
 func (s *Service) RegisterGRPC(server *grpc.Server) {

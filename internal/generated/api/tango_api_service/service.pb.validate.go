@@ -35,135 +35,32 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on Employee with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *Employee) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on Employee with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in EmployeeMultiError, or nil
-// if none found.
-func (m *Employee) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *Employee) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Name
-
-	if len(errors) > 0 {
-		return EmployeeMultiError(errors)
-	}
-
-	return nil
-}
-
-// EmployeeMultiError is an error wrapping multiple validation errors returned
-// by Employee.ValidateAll() if the designated constraints aren't met.
-type EmployeeMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m EmployeeMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m EmployeeMultiError) AllErrors() []error { return m }
-
-// EmployeeValidationError is the validation error returned by
-// Employee.Validate if the designated constraints aren't met.
-type EmployeeValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e EmployeeValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e EmployeeValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e EmployeeValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e EmployeeValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e EmployeeValidationError) ErrorName() string { return "EmployeeValidationError" }
-
-// Error satisfies the builtin error interface
-func (e EmployeeValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sEmployee.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = EmployeeValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = EmployeeValidationError{}
-
-// Validate checks the field values on GetEmployeeV1Request with the rules
+// Validate checks the field values on GetTangoParamsV1Request with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetEmployeeV1Request) Validate() error {
+func (m *GetTangoParamsV1Request) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetEmployeeV1Request with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on GetTangoParamsV1Request with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetEmployeeV1RequestMultiError, or nil if none found.
-func (m *GetEmployeeV1Request) ValidateAll() error {
+// GetTangoParamsV1RequestMultiError, or nil if none found.
+func (m *GetTangoParamsV1Request) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetEmployeeV1Request) validate(all bool) error {
+func (m *GetTangoParamsV1Request) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	if m.GetEmployeeId() <= 0 {
-		err := GetEmployeeV1RequestValidationError{
-			field:  "EmployeeId",
-			reason: "value must be greater than 0",
+	if m.GetFilter() == nil {
+		err := GetTangoParamsV1RequestValidationError{
+			field:  "Filter",
+			reason: "value is required",
 		}
 		if !all {
 			return err
@@ -171,131 +68,29 @@ func (m *GetEmployeeV1Request) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(errors) > 0 {
-		return GetEmployeeV1RequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// GetEmployeeV1RequestMultiError is an error wrapping multiple validation
-// errors returned by GetEmployeeV1Request.ValidateAll() if the designated
-// constraints aren't met.
-type GetEmployeeV1RequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GetEmployeeV1RequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GetEmployeeV1RequestMultiError) AllErrors() []error { return m }
-
-// GetEmployeeV1RequestValidationError is the validation error returned by
-// GetEmployeeV1Request.Validate if the designated constraints aren't met.
-type GetEmployeeV1RequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetEmployeeV1RequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetEmployeeV1RequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetEmployeeV1RequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetEmployeeV1RequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetEmployeeV1RequestValidationError) ErrorName() string {
-	return "GetEmployeeV1RequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetEmployeeV1RequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetEmployeeV1Request.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetEmployeeV1RequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetEmployeeV1RequestValidationError{}
-
-// Validate checks the field values on GetEmployeeV1Response with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetEmployeeV1Response) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on GetEmployeeV1Response with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// GetEmployeeV1ResponseMultiError, or nil if none found.
-func (m *GetEmployeeV1Response) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GetEmployeeV1Response) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
 	if all {
-		switch v := interface{}(m.GetEmployee()).(type) {
+		switch v := interface{}(m.GetFilter()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetEmployeeV1ResponseValidationError{
-					field:  "Employee",
+				errors = append(errors, GetTangoParamsV1RequestValidationError{
+					field:  "Filter",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetEmployeeV1ResponseValidationError{
-					field:  "Employee",
+				errors = append(errors, GetTangoParamsV1RequestValidationError{
+					field:  "Filter",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetEmployee()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetFilter()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return GetEmployeeV1ResponseValidationError{
-				field:  "Employee",
+			return GetTangoParamsV1RequestValidationError{
+				field:  "Filter",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -303,19 +98,19 @@ func (m *GetEmployeeV1Response) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetEmployeeV1ResponseMultiError(errors)
+		return GetTangoParamsV1RequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetEmployeeV1ResponseMultiError is an error wrapping multiple validation
-// errors returned by GetEmployeeV1Response.ValidateAll() if the designated
+// GetTangoParamsV1RequestMultiError is an error wrapping multiple validation
+// errors returned by GetTangoParamsV1Request.ValidateAll() if the designated
 // constraints aren't met.
-type GetEmployeeV1ResponseMultiError []error
+type GetTangoParamsV1RequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetEmployeeV1ResponseMultiError) Error() string {
+func (m GetTangoParamsV1RequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -324,11 +119,11 @@ func (m GetEmployeeV1ResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetEmployeeV1ResponseMultiError) AllErrors() []error { return m }
+func (m GetTangoParamsV1RequestMultiError) AllErrors() []error { return m }
 
-// GetEmployeeV1ResponseValidationError is the validation error returned by
-// GetEmployeeV1Response.Validate if the designated constraints aren't met.
-type GetEmployeeV1ResponseValidationError struct {
+// GetTangoParamsV1RequestValidationError is the validation error returned by
+// GetTangoParamsV1Request.Validate if the designated constraints aren't met.
+type GetTangoParamsV1RequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -336,24 +131,24 @@ type GetEmployeeV1ResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetEmployeeV1ResponseValidationError) Field() string { return e.field }
+func (e GetTangoParamsV1RequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetEmployeeV1ResponseValidationError) Reason() string { return e.reason }
+func (e GetTangoParamsV1RequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetEmployeeV1ResponseValidationError) Cause() error { return e.cause }
+func (e GetTangoParamsV1RequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetEmployeeV1ResponseValidationError) Key() bool { return e.key }
+func (e GetTangoParamsV1RequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetEmployeeV1ResponseValidationError) ErrorName() string {
-	return "GetEmployeeV1ResponseValidationError"
+func (e GetTangoParamsV1RequestValidationError) ErrorName() string {
+	return "GetTangoParamsV1RequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetEmployeeV1ResponseValidationError) Error() string {
+func (e GetTangoParamsV1RequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -365,14 +160,14 @@ func (e GetEmployeeV1ResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetEmployeeV1Response.%s: %s%s",
+		"invalid %sGetTangoParamsV1Request.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetEmployeeV1ResponseValidationError{}
+var _ error = GetTangoParamsV1RequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -380,4 +175,610 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetEmployeeV1ResponseValidationError{}
+} = GetTangoParamsV1RequestValidationError{}
+
+// Validate checks the field values on GetTangoParamsV1Response with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetTangoParamsV1Response) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTangoParamsV1Response with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetTangoParamsV1ResponseMultiError, or nil if none found.
+func (m *GetTangoParamsV1Response) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTangoParamsV1Response) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ParamType
+
+	for idx, item := range m.GetScalarParams() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetTangoParamsV1ResponseValidationError{
+						field:  fmt.Sprintf("ScalarParams[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetTangoParamsV1ResponseValidationError{
+						field:  fmt.Sprintf("ScalarParams[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetTangoParamsV1ResponseValidationError{
+					field:  fmt.Sprintf("ScalarParams[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetArrayParmas() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetTangoParamsV1ResponseValidationError{
+						field:  fmt.Sprintf("ArrayParmas[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetTangoParamsV1ResponseValidationError{
+						field:  fmt.Sprintf("ArrayParmas[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetTangoParamsV1ResponseValidationError{
+					field:  fmt.Sprintf("ArrayParmas[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetTangoParamsV1ResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTangoParamsV1ResponseMultiError is an error wrapping multiple validation
+// errors returned by GetTangoParamsV1Response.ValidateAll() if the designated
+// constraints aren't met.
+type GetTangoParamsV1ResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTangoParamsV1ResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTangoParamsV1ResponseMultiError) AllErrors() []error { return m }
+
+// GetTangoParamsV1ResponseValidationError is the validation error returned by
+// GetTangoParamsV1Response.Validate if the designated constraints aren't met.
+type GetTangoParamsV1ResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTangoParamsV1ResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTangoParamsV1ResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTangoParamsV1ResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTangoParamsV1ResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTangoParamsV1ResponseValidationError) ErrorName() string {
+	return "GetTangoParamsV1ResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTangoParamsV1ResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTangoParamsV1Response.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTangoParamsV1ResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTangoParamsV1ResponseValidationError{}
+
+// Validate checks the field values on GetTangoParamsV1Request_Filter with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetTangoParamsV1Request_Filter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTangoParamsV1Request_Filter with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// GetTangoParamsV1Request_FilterMultiError, or nil if none found.
+func (m *GetTangoParamsV1Request_Filter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTangoParamsV1Request_Filter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetDomain()) < 1 {
+		err := GetTangoParamsV1Request_FilterValidationError{
+			field:  "Domain",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetName()) < 1 {
+		err := GetTangoParamsV1Request_FilterValidationError{
+			field:  "Name",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetTimeFrom() == nil {
+		err := GetTangoParamsV1Request_FilterValidationError{
+			field:  "TimeFrom",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetTimeTo() == nil {
+		err := GetTangoParamsV1Request_FilterValidationError{
+			field:  "TimeTo",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.Member != nil {
+
+		if utf8.RuneCountInString(m.GetMember()) < 1 {
+			err := GetTangoParamsV1Request_FilterValidationError{
+				field:  "Member",
+				reason: "value length must be at least 1 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetTangoParamsV1Request_FilterMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTangoParamsV1Request_FilterMultiError is an error wrapping multiple
+// validation errors returned by GetTangoParamsV1Request_Filter.ValidateAll()
+// if the designated constraints aren't met.
+type GetTangoParamsV1Request_FilterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTangoParamsV1Request_FilterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTangoParamsV1Request_FilterMultiError) AllErrors() []error { return m }
+
+// GetTangoParamsV1Request_FilterValidationError is the validation error
+// returned by GetTangoParamsV1Request_Filter.Validate if the designated
+// constraints aren't met.
+type GetTangoParamsV1Request_FilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTangoParamsV1Request_FilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTangoParamsV1Request_FilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTangoParamsV1Request_FilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTangoParamsV1Request_FilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTangoParamsV1Request_FilterValidationError) ErrorName() string {
+	return "GetTangoParamsV1Request_FilterValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTangoParamsV1Request_FilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTangoParamsV1Request_Filter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTangoParamsV1Request_FilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTangoParamsV1Request_FilterValidationError{}
+
+// Validate checks the field values on GetTangoParamsV1Response_ScalarParam
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *GetTangoParamsV1Response_ScalarParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTangoParamsV1Response_ScalarParam
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetTangoParamsV1Response_ScalarParamMultiError, or nil if none found.
+func (m *GetTangoParamsV1Response_ScalarParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTangoParamsV1Response_ScalarParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for RawValueR
+
+	// no validation rules for RawValueW
+
+	if all {
+		switch v := interface{}(m.GetDataTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetTangoParamsV1Response_ScalarParamValidationError{
+					field:  "DataTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetTangoParamsV1Response_ScalarParamValidationError{
+					field:  "DataTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDataTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetTangoParamsV1Response_ScalarParamValidationError{
+				field:  "DataTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetTangoParamsV1Response_ScalarParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTangoParamsV1Response_ScalarParamMultiError is an error wrapping multiple
+// validation errors returned by
+// GetTangoParamsV1Response_ScalarParam.ValidateAll() if the designated
+// constraints aren't met.
+type GetTangoParamsV1Response_ScalarParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTangoParamsV1Response_ScalarParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTangoParamsV1Response_ScalarParamMultiError) AllErrors() []error { return m }
+
+// GetTangoParamsV1Response_ScalarParamValidationError is the validation error
+// returned by GetTangoParamsV1Response_ScalarParam.Validate if the designated
+// constraints aren't met.
+type GetTangoParamsV1Response_ScalarParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTangoParamsV1Response_ScalarParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTangoParamsV1Response_ScalarParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTangoParamsV1Response_ScalarParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTangoParamsV1Response_ScalarParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTangoParamsV1Response_ScalarParamValidationError) ErrorName() string {
+	return "GetTangoParamsV1Response_ScalarParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTangoParamsV1Response_ScalarParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTangoParamsV1Response_ScalarParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTangoParamsV1Response_ScalarParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTangoParamsV1Response_ScalarParamValidationError{}
+
+// Validate checks the field values on GetTangoParamsV1Response_ArrayParam with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetTangoParamsV1Response_ArrayParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTangoParamsV1Response_ArrayParam
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetTangoParamsV1Response_ArrayParamMultiError, or nil if none found.
+func (m *GetTangoParamsV1Response_ArrayParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTangoParamsV1Response_ArrayParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetDataTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetTangoParamsV1Response_ArrayParamValidationError{
+					field:  "DataTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetTangoParamsV1Response_ArrayParamValidationError{
+					field:  "DataTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDataTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetTangoParamsV1Response_ArrayParamValidationError{
+				field:  "DataTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetTangoParamsV1Response_ArrayParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTangoParamsV1Response_ArrayParamMultiError is an error wrapping multiple
+// validation errors returned by
+// GetTangoParamsV1Response_ArrayParam.ValidateAll() if the designated
+// constraints aren't met.
+type GetTangoParamsV1Response_ArrayParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTangoParamsV1Response_ArrayParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTangoParamsV1Response_ArrayParamMultiError) AllErrors() []error { return m }
+
+// GetTangoParamsV1Response_ArrayParamValidationError is the validation error
+// returned by GetTangoParamsV1Response_ArrayParam.Validate if the designated
+// constraints aren't met.
+type GetTangoParamsV1Response_ArrayParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTangoParamsV1Response_ArrayParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTangoParamsV1Response_ArrayParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTangoParamsV1Response_ArrayParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTangoParamsV1Response_ArrayParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTangoParamsV1Response_ArrayParamValidationError) ErrorName() string {
+	return "GetTangoParamsV1Response_ArrayParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTangoParamsV1Response_ArrayParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTangoParamsV1Response_ArrayParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTangoParamsV1Response_ArrayParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTangoParamsV1Response_ArrayParamValidationError{}

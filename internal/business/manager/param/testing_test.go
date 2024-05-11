@@ -1,4 +1,4 @@
-package employee_manager_test
+package param_manager_test
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 
 	"github.com/gojuno/minimock/v3"
 	"github.com/stretchr/testify/assert"
-	employee_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/employee"
-	"gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/employee/mocks"
+	param_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/param"
+	"gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/param/mocks"
 )
 
 var (
@@ -19,9 +19,9 @@ type fixture struct {
 	ctx context.Context
 	*assert.Assertions
 
-	emplyeeRepo *mocks.EmployeeRepoMock
+	paramRepo *mocks.ParamRepoMock
 
-	testEntity *employee_manager.Manager
+	testEntity *param_manager.Manager
 }
 
 func setUp(t *testing.T) (f *fixture) {
@@ -29,15 +29,15 @@ func setUp(t *testing.T) (f *fixture) {
 
 	ctrl := minimock.NewController(t)
 
-	emplyeeRepo := mocks.NewEmployeeRepoMock(ctrl)
+	paramRepo := mocks.NewParamRepoMock(ctrl)
 
-	testEntity := employee_manager.New(emplyeeRepo)
+	testEntity := param_manager.New(paramRepo)
 
 	return &fixture{
 		ctx:        context.Background(),
 		Assertions: assert.New(ctrl),
 
-		emplyeeRepo: emplyeeRepo,
+		paramRepo: paramRepo,
 
 		testEntity: testEntity,
 	}
