@@ -20,15 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TangoApiService_GetEmployeeV1_FullMethodName = "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetEmployeeV1"
+	TangoApiService_GetTangoParamsV1_FullMethodName = "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetTangoParamsV1"
 )
 
 // TangoApiServiceClient is the client API for TangoApiService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TangoApiServiceClient interface {
-	// Get employee by id.
-	GetEmployeeV1(ctx context.Context, in *GetEmployeeV1Request, opts ...grpc.CallOption) (*GetEmployeeV1Response, error)
+	// Get tango params by filter.
+	GetTangoParamsV1(ctx context.Context, in *GetTangoParamsV1Request, opts ...grpc.CallOption) (*GetTangoParamsV1Response, error)
 }
 
 type tangoApiServiceClient struct {
@@ -39,9 +39,9 @@ func NewTangoApiServiceClient(cc grpc.ClientConnInterface) TangoApiServiceClient
 	return &tangoApiServiceClient{cc}
 }
 
-func (c *tangoApiServiceClient) GetEmployeeV1(ctx context.Context, in *GetEmployeeV1Request, opts ...grpc.CallOption) (*GetEmployeeV1Response, error) {
-	out := new(GetEmployeeV1Response)
-	err := c.cc.Invoke(ctx, TangoApiService_GetEmployeeV1_FullMethodName, in, out, opts...)
+func (c *tangoApiServiceClient) GetTangoParamsV1(ctx context.Context, in *GetTangoParamsV1Request, opts ...grpc.CallOption) (*GetTangoParamsV1Response, error) {
+	out := new(GetTangoParamsV1Response)
+	err := c.cc.Invoke(ctx, TangoApiService_GetTangoParamsV1_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +52,8 @@ func (c *tangoApiServiceClient) GetEmployeeV1(ctx context.Context, in *GetEmploy
 // All implementations must embed UnimplementedTangoApiServiceServer
 // for forward compatibility
 type TangoApiServiceServer interface {
-	// Get employee by id.
-	GetEmployeeV1(context.Context, *GetEmployeeV1Request) (*GetEmployeeV1Response, error)
+	// Get tango params by filter.
+	GetTangoParamsV1(context.Context, *GetTangoParamsV1Request) (*GetTangoParamsV1Response, error)
 	mustEmbedUnimplementedTangoApiServiceServer()
 }
 
@@ -61,8 +61,8 @@ type TangoApiServiceServer interface {
 type UnimplementedTangoApiServiceServer struct {
 }
 
-func (UnimplementedTangoApiServiceServer) GetEmployeeV1(context.Context, *GetEmployeeV1Request) (*GetEmployeeV1Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetEmployeeV1 not implemented")
+func (UnimplementedTangoApiServiceServer) GetTangoParamsV1(context.Context, *GetTangoParamsV1Request) (*GetTangoParamsV1Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTangoParamsV1 not implemented")
 }
 func (UnimplementedTangoApiServiceServer) mustEmbedUnimplementedTangoApiServiceServer() {}
 
@@ -77,20 +77,20 @@ func RegisterTangoApiServiceServer(s grpc.ServiceRegistrar, srv TangoApiServiceS
 	s.RegisterService(&TangoApiService_ServiceDesc, srv)
 }
 
-func _TangoApiService_GetEmployeeV1_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetEmployeeV1Request)
+func _TangoApiService_GetTangoParamsV1_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTangoParamsV1Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TangoApiServiceServer).GetEmployeeV1(ctx, in)
+		return srv.(TangoApiServiceServer).GetTangoParamsV1(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TangoApiService_GetEmployeeV1_FullMethodName,
+		FullMethod: TangoApiService_GetTangoParamsV1_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TangoApiServiceServer).GetEmployeeV1(ctx, req.(*GetEmployeeV1Request))
+		return srv.(TangoApiServiceServer).GetTangoParamsV1(ctx, req.(*GetTangoParamsV1Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -103,8 +103,8 @@ var TangoApiService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TangoApiServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetEmployeeV1",
-			Handler:    _TangoApiService_GetEmployeeV1_Handler,
+			MethodName: "GetTangoParamsV1",
+			Handler:    _TangoApiService_GetTangoParamsV1_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
