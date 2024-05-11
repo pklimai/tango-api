@@ -7,13 +7,11 @@ include architect.mk
 ## GENERAL
 SERVICE_NAME = "tango-api"
 MIGRATION_DIR = $(CURDIR)/migration
+PG_DSN="host=localhost port=1331 user=tango-api-user password=1234 dbname=tango-api sslmode=disable"
 
 ## BIN
 GOOSE_BIN = $(LOCAL_BIN)/goose
 
-## PG
-PG_MIGRATION_DIR = $(MIGRATION_DIR)/postgresql
-PG_DSN="host=localhost port=1331 user=tango-api-user password=1234 dbname=tango-api sslmode=disable"
 
 #======================================#
 # INSTALLATION
@@ -38,13 +36,6 @@ custom-bin-deps: .custom-bin-deps ## install custom necessary bins
 	PATH="$(LOCAL_BIN):$$PATH" go generate -x ./...
 
 generate-mocks: .generate-mocks ## geenrate mocks for tests
-
-# Generating mocks...
-# PATH="/home/zigal0/Dev/Go/gitlab/zigal0/go-reference-project/bin:$PATH" go generate -x run=minimock ./...
-# sh -c rm -rf mocks && mkdir -p mocks
-# minimock -i * -o ./mocks -s _mock.go -g
-# minimock: ./mocks/employee_repo_mock.go
-# minimock: ./mocks/task_repo_mock.go
 
 #======================================#
 # DOCKER
@@ -78,39 +69,32 @@ compose-rs: .compose-rs ## restart docker containers
 # MIGRATIONS
 #======================================#
 
-## PG
+.migration-up: 
+	$(GOOSE_BIN) -dir $(MIGRATION_DIR) postgres $(PG_DSN) up
 
-.migration-pg-up: 
-	$(GOOSE_BIN) -dir $(PG_MIGRATION_DIR) postgres $(PG_DSN) up
+.migration-down:
+	$(GOOSE_BIN) -dir $(MIGRATION_DIR) postgres $(PG_DSN) down
 
-.migration-pg-down:
-	$(GOOSE_BIN) -dir $(PG_MIGRATION_DIR) postgres $(PG_DSN) down
+migration-up: .migration-up ## run up pg migratins
 
-migration-pg-up: .migration-pg-up ## run up pg migratins
+migration-down: .migration-pg-down ## run down pg migratins
 
-migration-pg-down: .migration-pg-down ## run down pg migratins
-
-migration-pg-create: ## create migration file in pg migration folder
-	$(GOOSE_BIN) -dir $(PG_MIGRATION_DIR) create $(name) sql
-
-## General
-
-migration-up: ## run up all migratins 
-	@make .migration-pg-up 
-
-migration-down: ## run down all migratins
-	@make .migration-pg-down 
+migration-create: ## create migration file in pg migration folder
+	$(GOOSE_BIN) -dir $(MIGRATION_DIR) create $(name) sql
 
 #======================================#
 # BUILD & RUN
 #======================================#
 
 run-full: ## run service with db
-	@make compose-up
+	@make .compose-up
 	@echo "Waiting for DBs to start"
 	@sleep 5
-	@make migration-pg-up
+	@make .migration-up
 	@make .run
+
+run-test:
+	go run ./cmd/test
 
 #======================================#
 # .PHONY
@@ -129,9 +113,9 @@ run-full: ## run service with db
 	compose-down \
 	compose-rm \
 	compose-rs \
-	migration-pg-create \
-	.migration-pg-up \
-	.migration-pg-down \
+	migration-create \
+	.migration-up \
+	.migration-down \
 	migration-up \
 	migration-down \
 	run-full
