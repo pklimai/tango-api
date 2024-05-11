@@ -1,6 +1,8 @@
 package repository
 
 const (
-	FormatErrQueryRowContext = "db.QueryRowContext: %w"
-	FormatErrRowScan         = "row.Scan: %w"
+	FmtErrQueryRowContext = "db.QueryRowContext: %w"
+	FmtErrSelectContext   = "db.SelectContext: %w"
+	FmtErrRowScan         = "row.Scan: %w"
+	FmtErrToSQL           = "ToSQL: %w"
 )

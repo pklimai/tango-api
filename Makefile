@@ -33,9 +33,11 @@ custom-bin-deps: .custom-bin-deps ## install custom necessary bins
 
 .generate-mocks:
 	$(info Generating mocks...) 
-	PATH="$(LOCAL_BIN):$$PATH" go generate -x ./...
+	PATH="$(LOCAL_BIN):$$PATH" go generate -x -run minimock ./...
 
 generate-mocks: .generate-mocks ## geenrate mocks for tests
+
+generate: .generate-mocks
 
 #======================================#
 # DOCKER
@@ -44,17 +46,14 @@ generate-mocks: .generate-mocks ## geenrate mocks for tests
 .compose-up: 
 	docker compose -p $(SERVICE_NAME) -f ./local/docker/docker-compose.yml up -d
 
-
 compose-down: 
 	docker compose -p $(SERVICE_NAME) -f ./local/docker/docker-compose.yml down
-
  
 .compose-rm:
 	docker compose -p $(SERVICE_NAME) -f ./local/docker/docker-compose.yml rm -fvs  #f - force, v - any anonymous volumes, s - stop
 
-
 .compose-rs:
-	make compose-rm
+	make compose-down
 	make compose-up
 
 compose-up: .compose-up ## start docker containers

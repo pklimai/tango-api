@@ -6,7 +6,9 @@ import (
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"gitlab.com/zigal0-group/nica/tango-api/config"
+	param_repository "gitlab.com/zigal0-group/nica/tango-api/internal/adapter/repository/param"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/api/tango_api_service_impl"
+	param_manager "gitlab.com/zigal0-group/nica/tango-api/internal/business/manager/param"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/database"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/generated/swagger"
 	"gitlab.com/zigal0/architect"
@@ -37,17 +39,18 @@ func main() {
 		logger.Fatalf("failed to create app: %v", err)
 	}
 
-	_, err = database.InitPostgreSQLConn(ctx)
+	pgDB, err := database.InitPostgreSQLConn(ctx)
 	if err != nil {
 		logger.Fatalf("failed to connect to pg: %v", err)
 	}
 
 	// repo
+	paramRepository := param_repository.New(pgDB)
 
-	// manager
+	paramManager := param_manager.New(paramRepository)
 
 	err = a.Run(
-		tango_api_service_impl.New(),
+		tango_api_service_impl.New(paramManager),
 	)
 	if err != nil {
 		logger.Fatalf("faile to run app: %v", err)
