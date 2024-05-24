@@ -6,6 +6,7 @@
 /.idea
 /.vscode
 /.cache
+/tmp
 
 /config/.env
 protodep.lock

@@ -3,24 +3,46 @@ package tango_api_service_impl
 import (
 	"context"
 	"fmt"
+	"time"
 
 	tool_collection "gitlab.com/zigal0-group/nica/tango-api/internal/business/tool/collection"
 	"gitlab.com/zigal0-group/nica/tango-api/internal/domain"
 	pb "gitlab.com/zigal0-group/nica/tango-api/internal/generated/api/tango_api_service"
+	"gitlab.com/zigal0/architect/pkg/business_error"
 )
 
 func (s *Service) GetTangoParamsV1(
 	ctx context.Context,
 	req *pb.GetTangoParamsV1Request,
 ) (*pb.GetTangoParamsV1Response, error) {
-	filterPB := req.GetFilter()
+	timeFrom, err := time.Parse(time.DateOnly, req.GetStartTime())
+	if err != nil {
+		return nil, business_error.New(
+			err,
+			fmt.Sprintf("invalid start_time: %s", req.GetStartTime()),
+			business_error.InvalidArgument,
+		)
+	}
+
+	var timeTo time.Time
+
+	if req.GetEndTime() != "" {
+		timeTo, err = time.Parse(time.DateOnly, req.GetEndTime())
+		if err != nil {
+			return nil, business_error.New(
+				err,
+				fmt.Sprintf("invalid end_time: %s", req.GetStartTime()),
+				business_error.InvalidArgument,
+			)
+		}
+	}
 
 	params, err := s.paramManager.GetTangoParamByFilter(ctx, domain.ParamFilter{
-		Domain:   filterPB.GetDomain(),
-		Name:     filterPB.GetName(),
-		Member:   filterPB.GetMember(),
-		TimeFrom: filterPB.TimeFrom.AsTime(),
-		TimeTo:   filterPB.TimeTo.AsTime(),
+		Domain:   req.GetDomainName(),
+		Name:     req.GetParameterName(),
+		Member:   req.GetMemberName(),
+		TimeFrom: timeFrom,
+		TimeTo:   timeTo,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("paramManager.GetTangoParamByFilter: %w", err)

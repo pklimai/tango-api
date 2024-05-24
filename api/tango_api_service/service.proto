@@ -27,7 +27,7 @@ service TangoApiService {
     // Get tango params by filter.
     rpc GetTangoParamsV1 (GetTangoParamsV1Request) returns (GetTangoParamsV1Response) {
         option (google.api.http) = {
-            get: "/tango-api/v1/get-tango-params",
+            get: "/tango-api/v1/parameter",
         };
     }
 }
@@ -35,15 +35,13 @@ service TangoApiService {
 // --------------- HANLDER TYPES ---------------
 
 message GetTangoParamsV1Request {
-    Filter filter = 1 [json_name = "filter", (validate.rules).message.required = true];
-    
-    message Filter {
-       string domain = 1 [json_name = "domain", (validate.rules).string.min_len = 1];
-       string name = 2 [json_name = "name", (validate.rules).string.min_len = 1];
-       optional string member = 3 [json_name = "member", (validate.rules).string.min_len = 1];
-       google.protobuf.Timestamp time_from = 4 [json_name = "time_from", (validate.rules).timestamp.required = true]; 
-       google.protobuf.Timestamp time_to = 5 [json_name = "time_to", (validate.rules).timestamp.required = true]; 
-    }
+    string domain_name = 1 [json_name = "domain_name", (validate.rules).string.min_len = 1];
+    string parameter_name = 2 [json_name = "parameter_name", (validate.rules).string.min_len = 1];
+    optional string member_name = 3 [json_name = "member_name", (validate.rules).string.min_len = 1];
+    // format YYYY-MM-DD 
+    string start_time = 4 [json_name = "start_time", (validate.rules).string.pattern = "^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$"];
+    // format YYYY-MM-DD 
+    optional string end_time = 5 [json_name = "end_time", (validate.rules).string.pattern = "^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$"];
 }
 
 message GetTangoParamsV1Response {
@@ -65,11 +63,17 @@ message GetTangoParamsV1Response {
 
     enum ParamType {
         INVALID = 0;
-        FLOAT64 = 1;
-        BOOL = 2;
-        STRING = 3;
-        INT16 = 4;
-        INT32 = 5;
-        INT64 = 6;
+        FLOAT32 = 1;
+        FLOAT64 = 2;
+        BOOL = 3;
+        STRING = 4;
+        INT8 = 5;
+        INT16 = 6;
+        INT32 = 7;
+        INT64 = 8;
+        UINT8 = 9;
+        UINT16 = 10;
+        UINT32 = 11;
+        UINT64 = 12;
     }
 }

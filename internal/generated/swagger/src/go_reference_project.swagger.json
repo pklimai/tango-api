@@ -21,7 +21,7 @@
     "application/json"
   ],
   "paths": {
-    "/tango-api/v1/get-tango-params": {
+    "/tango-api/v1/parameter": {
       "get": {
         "summary": "Get tango params by filter.",
         "operationId": "TangoApiService_GetTangoParamsV1",
@@ -41,36 +41,36 @@
         },
         "parameters": [
           {
-            "name": "filter.domain",
+            "name": "domain_name",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "filter.name",
+            "name": "parameter_name",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "filter.member",
+            "name": "member_name",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "filter.time_from",
+            "name": "start_time",
+            "description": "format YYYY-MM-DD",
             "in": "query",
             "required": false,
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
           },
           {
-            "name": "filter.time_to",
+            "name": "end_time",
+            "description": "format YYYY-MM-DD",
             "in": "query",
             "required": false,
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
           }
         ],
         "tags": [
@@ -80,28 +80,6 @@
     }
   },
   "definitions": {
-    "GetTangoParamsV1RequestFilter": {
-      "type": "object",
-      "properties": {
-        "domain": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "member": {
-          "type": "string"
-        },
-        "time_from": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "time_to": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
     "GetTangoParamsV1ResponseArrayParam": {
       "type": "object",
       "properties": {
@@ -127,12 +105,18 @@
       "type": "string",
       "enum": [
         "INVALID",
+        "FLOAT32",
         "FLOAT64",
         "BOOL",
         "STRING",
+        "INT8",
         "INT16",
         "INT32",
-        "INT64"
+        "INT64",
+        "UINT8",
+        "UINT16",
+        "UINT32",
+        "UINT64"
       ],
       "default": "INVALID"
     },
