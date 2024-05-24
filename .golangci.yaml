@@ -89,7 +89,7 @@ issues:
     - should have comment
     - should have a package comment
     - don't use an underscore in package name
-    - comment on exported var
+    - comment on exported
   exclude-dirs: 
     - bin
     - vendor

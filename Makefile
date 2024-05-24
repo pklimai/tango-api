@@ -7,11 +7,10 @@ include architect.mk
 ## GENERAL
 SERVICE_NAME = "tango-api"
 MIGRATION_DIR = $(CURDIR)/migration
-PG_DSN="host=localhost port=1331 user=tango-api-user password=1234 dbname=tango-api sslmode=disable"
+PG_DSN="host=localhost port=1331 user=$(SERVICE_NAME)-user password=1234 dbname=$(SERVICE_NAME) sslmode=disable"
 
 ## BIN
 GOOSE_BIN = $(LOCAL_BIN)/goose
-
 
 #======================================#
 # INSTALLATION
@@ -46,7 +45,7 @@ generate: .generate-mocks
 .compose-up: 
 	docker compose -p $(SERVICE_NAME) -f ./local/docker/docker-compose.yml up -d
 
-compose-down: 
+.compose-down: 
 	docker compose -p $(SERVICE_NAME) -f ./local/docker/docker-compose.yml down
  
 .compose-rm:
@@ -68,6 +67,9 @@ compose-rs: .compose-rs ## restart docker containers
 # MIGRATIONS
 #======================================#
 
+make pg-dump: ## get schema from server
+	pg_dump -U grafana -h 10.18.86.81 -d hdb -p 5000 -s -t 'att_*' > tmp/pg_dump.sql
+	
 .migration-up: 
 	$(GOOSE_BIN) -dir $(MIGRATION_DIR) postgres $(PG_DSN) up
 

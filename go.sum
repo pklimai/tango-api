@@ -91,8 +91,8 @@ github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsT
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
-gitlab.com/zigal0/architect v0.0.3 h1:VvXRJqEPvhRkOckD7nB+MkZ3wn6/5Sk+20iZkDVV4gk=
-gitlab.com/zigal0/architect v0.0.3/go.mod h1:XjQw4n/tQg5fy0HsY9vl5LKbf8Z8Im1DdXZh99B/ZTw=
+gitlab.com/zigal0/architect v0.0.4 h1:o28nE4a8yoeFY0J3qJEuVdQHRqRBSWp75d2SaBdquyE=
+gitlab.com/zigal0/architect v0.0.4/go.mod h1:XjQw4n/tQg5fy0HsY9vl5LKbf8Z8Im1DdXZh99B/ZTw=
 go.uber.org/atomic v1.7.0/go.mod h1:fEN4uk6kAWBTFdckzkM89CLk9XfWZrxpCo0nPH17wJc=
 go.uber.org/goleak v1.1.10/go.mod h1:8a7PlsEVH3e/a/GLqe5IIrQx6GzcnRmZEufDUTk4A7A=
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=

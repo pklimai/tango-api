@@ -101,6 +101,10 @@ func (r *Repository) getScalar(
 ) ([]domain.ScalarParam, error) {
 	var params []ScalarParam
 
+	if timeTo.IsZero() {
+		timeTo = time.Now()
+	}
+
 	err := r.db.SelectContext(
 		ctx,
 		&params,
@@ -124,6 +128,10 @@ func (r *Repository) getArray(
 	timeTo time.Time,
 ) ([]domain.ArrayParam, error) {
 	var params []ArrayParam
+
+	if timeTo.IsZero() {
+		timeTo = time.Now()
+	}
 
 	err := r.db.SelectContext(
 		ctx,

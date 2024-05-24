@@ -57,10 +57,10 @@ func (m *GetTangoParamsV1Request) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetFilter() == nil {
+	if utf8.RuneCountInString(m.GetDomainName()) < 1 {
 		err := GetTangoParamsV1RequestValidationError{
-			field:  "Filter",
-			reason: "value is required",
+			field:  "DomainName",
+			reason: "value length must be at least 1 runes",
 		}
 		if !all {
 			return err
@@ -68,33 +68,56 @@ func (m *GetTangoParamsV1Request) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetFilter()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetTangoParamsV1RequestValidationError{
-					field:  "Filter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetTangoParamsV1RequestValidationError{
-					field:  "Filter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if utf8.RuneCountInString(m.GetParameterName()) < 1 {
+		err := GetTangoParamsV1RequestValidationError{
+			field:  "ParameterName",
+			reason: "value length must be at least 1 runes",
 		}
-	} else if v, ok := interface{}(m.GetFilter()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetTangoParamsV1RequestValidationError{
-				field:  "Filter",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
+	}
+
+	if !_GetTangoParamsV1Request_StartTime_Pattern.MatchString(m.GetStartTime()) {
+		err := GetTangoParamsV1RequestValidationError{
+			field:  "StartTime",
+			reason: "value does not match regex pattern \"^\\\\d{2,4}\\\\-\\\\d{1,2}\\\\-\\\\d{1,2}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.MemberName != nil {
+
+		if utf8.RuneCountInString(m.GetMemberName()) < 1 {
+			err := GetTangoParamsV1RequestValidationError{
+				field:  "MemberName",
+				reason: "value length must be at least 1 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.EndTime != nil {
+
+		if !_GetTangoParamsV1Request_EndTime_Pattern.MatchString(m.GetEndTime()) {
+			err := GetTangoParamsV1RequestValidationError{
+				field:  "EndTime",
+				reason: "value does not match regex pattern \"^\\\\d{2,4}\\\\-\\\\d{1,2}\\\\-\\\\d{1,2}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -176,6 +199,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetTangoParamsV1RequestValidationError{}
+
+var _GetTangoParamsV1Request_StartTime_Pattern = regexp.MustCompile("^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$")
+
+var _GetTangoParamsV1Request_EndTime_Pattern = regexp.MustCompile("^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$")
 
 // Validate checks the field values on GetTangoParamsV1Response with the rules
 // defined in the proto definition for this message. If any rules are
@@ -348,168 +375,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetTangoParamsV1ResponseValidationError{}
-
-// Validate checks the field values on GetTangoParamsV1Request_Filter with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetTangoParamsV1Request_Filter) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on GetTangoParamsV1Request_Filter with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// GetTangoParamsV1Request_FilterMultiError, or nil if none found.
-func (m *GetTangoParamsV1Request_Filter) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GetTangoParamsV1Request_Filter) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if utf8.RuneCountInString(m.GetDomain()) < 1 {
-		err := GetTangoParamsV1Request_FilterValidationError{
-			field:  "Domain",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if utf8.RuneCountInString(m.GetName()) < 1 {
-		err := GetTangoParamsV1Request_FilterValidationError{
-			field:  "Name",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if m.GetTimeFrom() == nil {
-		err := GetTangoParamsV1Request_FilterValidationError{
-			field:  "TimeFrom",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if m.GetTimeTo() == nil {
-		err := GetTangoParamsV1Request_FilterValidationError{
-			field:  "TimeTo",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if m.Member != nil {
-
-		if utf8.RuneCountInString(m.GetMember()) < 1 {
-			err := GetTangoParamsV1Request_FilterValidationError{
-				field:  "Member",
-				reason: "value length must be at least 1 runes",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return GetTangoParamsV1Request_FilterMultiError(errors)
-	}
-
-	return nil
-}
-
-// GetTangoParamsV1Request_FilterMultiError is an error wrapping multiple
-// validation errors returned by GetTangoParamsV1Request_Filter.ValidateAll()
-// if the designated constraints aren't met.
-type GetTangoParamsV1Request_FilterMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GetTangoParamsV1Request_FilterMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GetTangoParamsV1Request_FilterMultiError) AllErrors() []error { return m }
-
-// GetTangoParamsV1Request_FilterValidationError is the validation error
-// returned by GetTangoParamsV1Request_Filter.Validate if the designated
-// constraints aren't met.
-type GetTangoParamsV1Request_FilterValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetTangoParamsV1Request_FilterValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetTangoParamsV1Request_FilterValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetTangoParamsV1Request_FilterValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetTangoParamsV1Request_FilterValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetTangoParamsV1Request_FilterValidationError) ErrorName() string {
-	return "GetTangoParamsV1Request_FilterValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetTangoParamsV1Request_FilterValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetTangoParamsV1Request_Filter.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetTangoParamsV1Request_FilterValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetTangoParamsV1Request_FilterValidationError{}
 
 // Validate checks the field values on GetTangoParamsV1Response_ScalarParam
 // with the rules defined in the proto definition for this message. If any

@@ -81,7 +81,7 @@ func RegisterTangoApiServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetTangoParamsV1", runtime.WithHTTPPathPattern("/tango-api/v1/get-tango-params"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetTangoParamsV1", runtime.WithHTTPPathPattern("/tango-api/v1/parameter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -104,21 +104,21 @@ func RegisterTangoApiServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 // RegisterTangoApiServiceHandlerFromEndpoint is same as RegisterTangoApiServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterTangoApiServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -145,7 +145,7 @@ func RegisterTangoApiServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetTangoParamsV1", runtime.WithHTTPPathPattern("/tango-api/v1/get-tango-params"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gitlab.com.zigal0_group.nica.tango_api.api.tango_api_service.TangoApiService/GetTangoParamsV1", runtime.WithHTTPPathPattern("/tango-api/v1/parameter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -165,7 +165,7 @@ func RegisterTangoApiServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_TangoApiService_GetTangoParamsV1_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"tango-api", "v1", "get-tango-params"}, ""))
+	pattern_TangoApiService_GetTangoParamsV1_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"tango-api", "v1", "parameter"}, ""))
 )
 
 var (
