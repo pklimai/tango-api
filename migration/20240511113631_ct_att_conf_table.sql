@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS att_conf (
-    att_conf_id         INTEGER                          PRIMARY KEY,
+    att_conf_id         INTEGER                         PRIMARY KEY,
     att_name            TEXT                            NOT NULL,
     att_conf_type_id    SMALLINT                        NOT NULL,
     att_conf_format_id  SMALLINT                        NOT NULL,

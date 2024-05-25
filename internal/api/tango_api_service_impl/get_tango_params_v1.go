@@ -49,7 +49,7 @@ func (s *Service) GetTangoParamsV1(
 	}
 
 	params, err := s.paramManager.GetTangoParamByFilter(ctx, domain.ParamFilter{
-		Domain:   req.GetDomainName(),
+		Domain:   req.GetSystemName(),
 		Name:     req.GetParameterName(),
 		Member:   req.GetMemberName(),
 		TimeFrom: timeFrom,

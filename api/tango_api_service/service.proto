@@ -7,7 +7,6 @@ option go_package = "gitlab.com/zigal0-group/nica/tango-api/internal/generated/a
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-import "google/protobuf/timestamp.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
@@ -35,12 +34,12 @@ service TangoApiService {
 // --------------- HANLDER TYPES ---------------
 
 message GetTangoParamsV1Request {
-    string domain_name = 1 [json_name = "domain_name", (validate.rules).string.min_len = 1];
+    string system_name = 1 [json_name = "system_name", (validate.rules).string.min_len = 1];
     string parameter_name = 2 [json_name = "parameter_name", (validate.rules).string.min_len = 1];
     optional string member_name = 3 [json_name = "member_name", (validate.rules).string.min_len = 1];
-    // format YYYY-MM-DD 
+    // format 1997-01-15 
     string start_time = 4 [json_name = "start_time", (validate.rules).string.pattern = "^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$"];
-    // format YYYY-MM-DD 
+    // format 1997-01-15 
     optional string end_time = 5 [json_name = "end_time", (validate.rules).string.pattern = "^\\d{2,4}\\-\\d{1,2}\\-\\d{1,2}$"];
 }
 
@@ -52,13 +51,15 @@ message GetTangoParamsV1Response {
     message ScalarParam {
         string raw_value_r = 1 [json_name = "raw_value_r"]; 
         string raw_value_w = 2 [json_name = "raw_value_w"]; 
-        google.protobuf.Timestamp data_time = 3 [json_name = "data_time"];
+         // format 1997-01-15 20:16:28.000
+        string data_time = 3 [json_name = "data_time"];
     }
 
     message ArrayParam {
         repeated string raw_values_r = 1 [json_name = "raw_values_r"]; 
         repeated string raw_values_w = 2 [json_name = "raw_values_w"];
-        google.protobuf.Timestamp data_time = 3 [json_name = "data_time"];
+        // format 1997-01-15 20:16:28.000
+        string data_time = 3 [json_name = "data_time"];
     }
 
     enum ParamType {

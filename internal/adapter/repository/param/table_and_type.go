@@ -1,5 +1,7 @@
 package param_repository
 
+import "reflect"
+
 const (
 	TableNameAttArrayDevushort  = "att_array_devushort"
 	TableNameAttArrayDevulong64 = "att_array_devulong64"
@@ -38,7 +40,7 @@ var scalarTables = []string{
 	TableNameAttScalarDevulong,
 	TableNameAttScalarDevuchar,
 	TableNameAttScalarDevfloat,
-	TableNameAttScalarDevenum,
+	// TableNameAttScalarDevenum,
 	// TableNameAttScalarDevencoded,
 	TableNameAttScalarDevdouble,
 	TableNameAttScalarDevboolean,
@@ -60,10 +62,46 @@ var arrayTables = []string{
 	TableNameAttArrayDevlong64,
 	TableNameAttArrayDevlong,
 	TableNameAttArrayDevfloat,
-	TableNameAttArrayDevenum,
+	// TableNameAttArrayDevenum,
 	// TableNameAttArrayDevencoded,
 	TableNameAttArrayDevdouble,
 	TableNameAttArrayDevboolean,
 }
 
 var allTables = append(scalarTables, arrayTables...)
+
+// nolint: gomnd
+func paramTypeToKind(attConfTypeID int16) reflect.Kind {
+	switch attConfTypeID {
+	case 1:
+		return reflect.Bool
+	case 2:
+		return reflect.Int16
+	case 3:
+		return reflect.Int32
+	case 4:
+		return reflect.Float32
+	case 5:
+		return reflect.Float64
+	case 6:
+		return reflect.Uint16
+	case 7:
+		return reflect.Uint32
+	case 8:
+		return reflect.String
+	case 9:
+		return reflect.Int32
+	case 10:
+		return reflect.Uint8
+	case 11:
+		return reflect.Int64
+	case 12:
+		return reflect.Uint64
+	case 13: // If bytes willbe required - need to refuse from reflect types or find workaround...
+		return reflect.Invalid
+	case 14:
+		return reflect.Int16
+	default:
+		return reflect.Invalid
+	}
+}

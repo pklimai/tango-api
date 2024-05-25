@@ -5,7 +5,10 @@ import (
 
 	"gitlab.com/zigal0-group/nica/tango-api/internal/domain"
 	pb "gitlab.com/zigal0-group/nica/tango-api/internal/generated/api/tango_api_service"
-	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+const (
+	dateTimeFormat = "2006-01-02 15:04:05.000"
 )
 
 func paramTypeToPB(domainType reflect.Kind) pb.GetTangoParamsV1Response_ParamType {
@@ -43,7 +46,7 @@ func scalarParamToPB(param domain.ScalarParam) *pb.GetTangoParamsV1Response_Scal
 	return &pb.GetTangoParamsV1Response_ScalarParam{
 		RawValueR: param.ValueR,
 		RawValueW: param.ValueW,
-		DataTime:  timestamppb.New(param.DataTime),
+		DataTime:  param.DataTime.Format(dateTimeFormat),
 	}
 }
 
@@ -51,6 +54,6 @@ func arrayParamToPB(param domain.ArrayParam) *pb.GetTangoParamsV1Response_ArrayP
 	return &pb.GetTangoParamsV1Response_ArrayParam{
 		RawValuesR: param.ValuesR,
 		RawValuesW: param.ValuesW,
-		DataTime:   timestamppb.New(param.DataTime),
+		DataTime:   param.DataTime.Format(dateTimeFormat),
 	}
 }
