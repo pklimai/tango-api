@@ -2,6 +2,7 @@ package tango_api_service_impl
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -32,6 +33,16 @@ func (s *Service) GetTangoParamsV1(
 			return nil, business_error.New(
 				err,
 				fmt.Sprintf("invalid end_time: %s", req.GetStartTime()),
+				business_error.InvalidArgument,
+			)
+		}
+
+		if timeTo.Before(timeFrom) {
+			err = errors.New("strart_time > end_time")
+
+			return nil, business_error.New(
+				err,
+				err.Error(),
 				business_error.InvalidArgument,
 			)
 		}
