@@ -2,7 +2,8 @@
 
 Microservice for retrieving hardware values ​​that are taken from instruments during experiments at NICA.
 
-https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
+## Local development
+For local development refer to Makefile and its commands. 
 
 ## Deploying
 

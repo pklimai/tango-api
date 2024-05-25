@@ -41,7 +41,7 @@
         },
         "parameters": [
           {
-            "name": "domain_name",
+            "name": "system_name",
             "in": "query",
             "required": false,
             "type": "string"
@@ -60,14 +60,14 @@
           },
           {
             "name": "start_time",
-            "description": "format YYYY-MM-DD",
+            "description": "format 1997-01-15",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "end_time",
-            "description": "format YYYY-MM-DD",
+            "description": "format 1997-01-15",
             "in": "query",
             "required": false,
             "type": "string"
@@ -97,7 +97,7 @@
         },
         "data_time": {
           "type": "string",
-          "format": "date-time"
+          "title": "format 1997-01-15 20:16:28.000"
         }
       }
     },
@@ -131,7 +131,7 @@
         },
         "data_time": {
           "type": "string",
-          "format": "date-time"
+          "title": "format 1997-01-15 20:16:28.000"
         }
       }
     },

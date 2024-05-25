@@ -57,9 +57,9 @@ func (m *GetTangoParamsV1Request) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetDomainName()) < 1 {
+	if utf8.RuneCountInString(m.GetSystemName()) < 1 {
 		err := GetTangoParamsV1RequestValidationError{
-			field:  "DomainName",
+			field:  "SystemName",
 			reason: "value length must be at least 1 runes",
 		}
 		if !all {
@@ -403,34 +403,7 @@ func (m *GetTangoParamsV1Response_ScalarParam) validate(all bool) error {
 
 	// no validation rules for RawValueW
 
-	if all {
-		switch v := interface{}(m.GetDataTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetTangoParamsV1Response_ScalarParamValidationError{
-					field:  "DataTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetTangoParamsV1Response_ScalarParamValidationError{
-					field:  "DataTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetDataTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetTangoParamsV1Response_ScalarParamValidationError{
-				field:  "DataTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for DataTime
 
 	if len(errors) > 0 {
 		return GetTangoParamsV1Response_ScalarParamMultiError(errors)
@@ -537,34 +510,7 @@ func (m *GetTangoParamsV1Response_ArrayParam) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetDataTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetTangoParamsV1Response_ArrayParamValidationError{
-					field:  "DataTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetTangoParamsV1Response_ArrayParamValidationError{
-					field:  "DataTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetDataTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetTangoParamsV1Response_ArrayParamValidationError{
-				field:  "DataTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for DataTime
 
 	if len(errors) > 0 {
 		return GetTangoParamsV1Response_ArrayParamMultiError(errors)
