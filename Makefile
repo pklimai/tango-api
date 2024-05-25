@@ -7,7 +7,7 @@ include architect.mk
 ## GENERAL
 SERVICE_NAME = "tango-api"
 MIGRATION_DIR = $(CURDIR)/migration
-PG_DSN="host=localhost port=1331 user=$(SERVICE_NAME)-user password=1234 dbname=$(SERVICE_NAME) sslmode=disable"
+PG_DSN="host=127.0.0.1 port=1331 user=$(SERVICE_NAME)-user password=1234 dbname=$(SERVICE_NAME) sslmode=disable"
 
 ## BIN
 GOOSE_BIN = $(LOCAL_BIN)/goose

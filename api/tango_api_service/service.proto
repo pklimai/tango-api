@@ -13,7 +13,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
         title: "tango-api";
     };
-    host: "localhost:7000";
+    host: "127.0.0.1:7000";
     external_docs: {
       url: "https://gitlab.com/zigal0-group/nica/tango-api";
       description: "API for tango-api application.";
